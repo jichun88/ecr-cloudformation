@@ -1,24 +1,12 @@
 Description: >
 
-  This template deploys a VPC, with a pair of public and private subnets spread 
-  across two Availabilty Zones. It deploys an Internet Gateway, with a default 
-  route on the public subnets. It deploys a pair of NAT Gateways (one in each AZ), 
-  and default routes for them in the private subnets.
-
-  It then deploys a highly available ECS cluster using an AutoScaling Group, with 
-  ECS hosts distributed across multiple Availability Zones. 
-
-  Finally, it deploys a pair of example ECS services from containers published in 
-  Amazon EC2 Container Registry (Amazon ECR).
-
-  Last Modified: 22nd September 2016
-  Author: Paul Maddox <pmaddox@amazon.com>
+  Internet->ALB by Path(Public)-> ECS(Private) by 2-AZ
 
 Resources:
   VPC:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/infrastructure/vpc.yaml
+      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/infrastructure/vpc.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VpcCIDR: 10.180.0.0/16
@@ -30,7 +18,7 @@ Resources:
   SecurityGroups:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/infrastructure/security-groups.yaml
+      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/infrastructure/security-groups.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VPC: !GetAtt VPC.Outputs.VPC
@@ -38,7 +26,7 @@ Resources:
   ALB:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/infrastructure/load-balancers.yaml
+      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/infrastructure/load-balancers.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VPC: !GetAtt VPC.Outputs.VPC
@@ -48,7 +36,7 @@ Resources:
   ECS:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/infrastructure/ecs-cluster.yaml
+      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/infrastructure/ecs-cluster.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         InstanceType: t2.large
@@ -60,7 +48,7 @@ Resources:
   ProductService:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/services/product-service/service.yaml
+      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/services/product-service/service.yaml
       Parameters:
         VPC: !GetAtt VPC.Outputs.VPC
         Cluster: !GetAtt ECS.Outputs.Cluster
@@ -71,7 +59,7 @@ Resources:
   WebsiteService:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/services/website-service/service.yaml
+      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/services/website-service/service.yaml
       Parameters:
         VPC: !GetAtt VPC.Outputs.VPC
         Cluster: !GetAtt ECS.Outputs.Cluster
