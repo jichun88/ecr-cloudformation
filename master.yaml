@@ -6,7 +6,7 @@ Resources:
   VPC:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/infrastructure/vpc.yaml
+      TemplateURL: https://ecr-yaml.s3.ap-northeast-2.amazonaws.com/infrastructure/vpc.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VpcCIDR: 10.180.0.0/16
@@ -18,7 +18,7 @@ Resources:
   SecurityGroups:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/infrastructure/security-groups.yaml
+      TemplateURL: https://ecr-yaml.s3.ap-northeast-2.amazonaws.com/infrastructure/security-groups.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VPC: !GetAtt VPC.Outputs.VPC
@@ -26,7 +26,7 @@ Resources:
   ALB:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/infrastructure/load-balancers.yaml
+      TemplateURL: hhttps://ecr-yaml.s3.ap-northeast-2.amazonaws.com/infrastructure/load-balancers.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         VPC: !GetAtt VPC.Outputs.VPC
@@ -36,7 +36,7 @@ Resources:
   ECS:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/infrastructure/ecs-cluster.yaml
+      TemplateURL: https://ecr-yaml.s3.ap-northeast-2.amazonaws.com/infrastructure/ecs-cluster.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
         InstanceType: t3.small
@@ -48,7 +48,7 @@ Resources:
   ProductService:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/services/product-service/service.yaml
+      TemplateURL: https://ecr-yaml.s3.ap-northeast-2.amazonaws.com/product-service/service.yaml
       Parameters:
         VPC: !GetAtt VPC.Outputs.VPC
         Cluster: !GetAtt ECS.Outputs.Cluster
@@ -59,7 +59,7 @@ Resources:
   WebsiteService:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/services/website-service/service.yaml
+      TemplateURL: https://ecr-yaml.s3.ap-northeast-2.amazonaws.com/website-service/service.yaml
       Parameters:
         VPC: !GetAtt VPC.Outputs.VPC
         Cluster: !GetAtt ECS.Outputs.Cluster
