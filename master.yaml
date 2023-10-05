@@ -39,7 +39,7 @@ Resources:
       TemplateURL: https://raw.githubusercontent.com/jichun88/ecr-cloudformation/main/infrastructure/ecs-cluster.yaml
       Parameters:
         EnvironmentName: !Ref AWS::StackName
-        InstanceType: t2.large
+        InstanceType: t3.small
         ClusterSize: 4
         VPC: !GetAtt VPC.Outputs.VPC
         SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
